@@ -36,17 +36,17 @@ app.get("/sleep", function(request, reply) {
 
 app.get("/sleep/:seconds", function(request, reply) {
   let seconds = request.params.seconds;
-  
-  if (isNaN(seconds) || seconds == "") {
+
+  if (isNaN(seconds) || seconds === "") {
     console.log("Rejected non-number");
     throw new Error("You must specify a number");
   }
-  
+
   if (seconds > MAX_SECONDS) {
     console.log("Rejected large number");
     throw new Error("Sorry, try a lower number");
   }
-  
+
   console.log(`Sleeping for ${seconds}s`);
   sleep(seconds * 1000).then(() => {
     console.log(`Slept for ${seconds}s`)
@@ -54,8 +54,7 @@ app.get("/sleep/:seconds", function(request, reply) {
   });
 });
 
-
-app.listen(process.env.PORT, function(err, address) {
+app.listen({ port: process.env.PORT || "8080", host: "0.0.0.0" }, function(err, address) {
   if (err) {
     app.log.error(err);
     process.exit(1);
